@@ -1,0 +1,44 @@
+$font-pang = Pangmenzhengdao, 'Avenir', Helvetica, Arial, sans-serif
+$font-din = DIN, 'Avenir', Helvetica, Arial, sans-serif
+
+$full(w = 100%, h = 100%)
+  width w
+  height h
+  box-sizing border-box
+
+$center()
+  display flex
+  align-items center
+  justify-content center
+
+$blur(val = 0.05rem)
+  backdrop-filter blur(val)
+  -webkit-backdrop-filter blur(val)
+
+$border(color = #000, width = 0.01rem)
+  border width solid color
+
+$primary-color = #47B3FF
+$secondary-color = #5BD5FF
+$primary-bg = rgba(49,94,139,.3)
+$primary-border = rgba(91,213,255,.5)
+$blue = #2F86EE
+$edge = #00f2ff
+$yellow = #ffd400
+$green = #4F953B
+$edge = #00f2ff
+
+$card-bg = linear-gradient(to bottom, rgba(5,71,138,.2), rgba(5,71,138,.6))
+$card-title-color = #fff
+$card-title-size = .14rem
+$card-border = .01rem solid $primary-border
+
+$table-title-bg =rgba(2,27,53,.5)
+$table-content-bg = rgba(2,27,53,.2)
+$table-content-hover-color = $primary-color
+$table-content-hover-bg = $primary-bg
+
+$font-color = #70A7E0
+
+$table-bg(opacity = 0.3)
+  rgba(0, 118, 255, opacity )
