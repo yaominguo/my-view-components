@@ -7,13 +7,13 @@ export const router = createRouter({
   strict: true,
   routes: [
     {
-      path: '/',
+      path: '/my-view-components',
       name: 'Main',
       component: Layout,
-      redirect: '/my-grid',
+      redirect: '/my-view-components/my-grid',
       children: menus.map((menu) => ({
         name: menu.name,
-        path: `/${menu.name}`,
+        path: `/my-view-components/${menu.name}`,
         component: menu.component,
       })),
     },
