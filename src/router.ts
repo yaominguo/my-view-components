@@ -1,9 +1,9 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Layout from './layout.vue'
 import menus from './menu'
 
 export const router = createRouter({
-  history: createWebHashHistory('/my-view-components/'),
+  history: createWebHistory('/my-view-components/'),
   strict: true,
   routes: [
     {
