@@ -7,6 +7,8 @@ wrapperClass: my-grid
 
 大屏布局组件
 
+Tag: `m-grid`
+
 ```vue demo
 <template>
   <!-- 真实使用中不需要这个min-height, m-grid默认高度为父容器的100% -->

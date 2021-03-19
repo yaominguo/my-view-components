@@ -7,6 +7,8 @@ wrapperClass: my-title
 
 大屏标题组件
 
+Tag: `m-title`
+
 ```vue demo
 <template>
   <m-title>XXXXXXX数据平台1</m-title>

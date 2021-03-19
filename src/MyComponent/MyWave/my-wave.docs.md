@@ -7,6 +7,8 @@ wrapperClass: my-wave
 
 百分比波浪球组件
 
+Tag: `m-wave`
+
 ```vue demo
 <template>
   <m-wave :value="67" size=".5rem">67</m-wave>

@@ -7,6 +7,8 @@ wrapperClass: my-empty
 
 无数据时展示
 
+Tag: `m-empty`
+
 ```vue demo
 <template>
   <m-empty text="建设中" />

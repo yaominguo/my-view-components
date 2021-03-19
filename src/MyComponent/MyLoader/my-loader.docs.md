@@ -7,6 +7,8 @@ wrapperClass: my-loader
 
 Loading 组件
 
+Tag: `m-loader`
+
 ```vue demo
 <template>
   <m-loader v-if="show" />

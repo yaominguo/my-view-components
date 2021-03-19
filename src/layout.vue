@@ -57,7 +57,7 @@ $hover-color = rgb(236, 245, 255)
   .menu
     font-size 14px
     >div
-      line-height 4
+      line-height 3
       cursor pointer
       padding 0 10px
       &.on

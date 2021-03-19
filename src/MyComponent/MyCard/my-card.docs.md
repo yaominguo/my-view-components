@@ -7,6 +7,8 @@ wrapperClass: my-card
 
 模块包裹组件
 
+Tag: `m-card`
+
 ```vue demo
 <template>
   <m-card title="这是标题"><h1>内容或组件</h1></m-card>

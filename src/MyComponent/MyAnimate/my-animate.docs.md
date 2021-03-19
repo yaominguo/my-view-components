@@ -7,6 +7,8 @@ wrapperClass: my-animate
 
 基于[animate.css](https://animate.style/)封装的动画组件，对包裹其中的元素实现进入、离开时的动画。
 
+Tag: `m-animate`
+
 ```vue demo
 <template>
   <m-animate enter="fadeInLeft" leave="fadeOutLeft">

@@ -7,6 +7,8 @@ wrapperClass: my-step
 
 步骤条组件
 
+Tag: `m-step`
+
 ```vue demo
 <template>
   <m-step :steps="['第一步', '第二步', '第三步', '第四步']" current="3" />

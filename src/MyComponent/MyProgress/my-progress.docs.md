@@ -7,6 +7,8 @@ wrapperClass: my-progress
 
 进度条组件
 
+Tag: `m-progress`
+
 ```vue demo
 <template>
   <m-progress :value="80" />

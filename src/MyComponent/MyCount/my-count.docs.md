@@ -7,6 +7,8 @@ wrapperClass: my-count
 
 数字跳动展示组件
 
+Tag: `m-count`
+
 ```vue demo
 <template>
   <div><m-count :value="99999" /></div>

@@ -7,6 +7,8 @@ wrapperClass: my-drawer
 
 侧边抽屉组件
 
+Tag: `m-drawer`
+
 ```vue demo
 <template>
   <m-drawer v-model="show" @close="handleClose">

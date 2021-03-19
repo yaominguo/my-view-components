@@ -7,6 +7,8 @@ wrapperClass: my-scroll
 
 轮播组件
 
+Tag: `m-scroll`
+
 ```vue demo
 <template>
   <div style="display:inline-block;width:50%;height:2rem;overflow:hidden;">

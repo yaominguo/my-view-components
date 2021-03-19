@@ -7,13 +7,13 @@
         :style="`flex:${calcWidth[index]}`"
       >
         <p :style="`text-align:${calcAlign[index]}`">
-          {{ title.split('*')[0].replace('::', '') }}
+          {{ title.split('*')[0].replace('=', '') }}
         </p>
       </div>
     </div>
     <div class="table-content">
       <div
-        v-for="(item, index) in dataSource"
+        v-for="(item, index) in data"
         :key="index"
         :class="{ selectable: selectable }"
         @click.prevent="handleClick(item)"
@@ -21,19 +21,16 @@
         <div
           v-for="(key, i) in layout.keys"
           :key="key"
-          :style="`flex:${calcWidth[i]}`"
+          :style="`flex:${calcWidth[i]};text-align:${calcAlign[i]}`"
         >
-          <p v-if="key.indexOf('>') >= 0" :style="`text-align:${calcAlign[i]}`">
-            {{ transValue(item, key) }}
-          </p>
           <img
-            v-else-if="key.indexOf('#') >= 0 && key.split('#')[1] === 'image'"
-            :src="item[key.split('#')[0]]"
+            v-if="isImage(key)"
+            :src="item[isImage(key)]"
             :draggable="false"
-            @click.stop="handleViewImage(item[key.split('#')[0]])"
+            @click.stop="handleViewImage(item[isImage(key)])"
           />
           <p v-else :style="`text-align:${calcAlign[i]}`">
-            {{ item[key] }}
+            {{ formatData(key, item) }}
           </p>
         </div>
       </div>
@@ -51,8 +48,8 @@ import MyModal from '../MyModal/my-modal.vue'
 interface FormatterType {
   [propName: string]: <T>(val: T) => T
 }
-interface dataType {
-  [propName: string]: string | number | string[]
+interface DataType {
+  [propName: string]: string | number | string[] | number[]
 }
 
 export default defineComponent({
@@ -60,18 +57,22 @@ export default defineComponent({
   displayName: 'm-table',
   components: { MyModal },
   props: {
+    /** 布局模板 */
     template: {
       type: Array as PropType<string[]>,
       required: true,
     },
+    /** 数据 */
     data: {
-      type: Array as PropType<dataType[]>,
+      type: Array as PropType<DataType[]>,
       default: () => [],
     },
+    /** 数据的格式化方法对象集合 */
     formatter: {
       type: Object as PropType<FormatterType>,
       default: null,
     },
+    /** 是否可选择 */
     selectable: {
       type: Boolean as PropType<boolean>,
       default: false,
@@ -86,14 +87,7 @@ export default defineComponent({
       const keys = template[1].split('|')
       return { header, keys }
     })
-    const dataSource = computed(() => props.data)
-    const transValue = (item: dataType, key: string) => {
-      return (
-        props.formatter &&
-        props.formatter[key.split('>')[1]](item[key.split('>')[0]])
-      )
-    }
-    const handleClick = (data: dataType) => {
+    const handleClick = (data: DataType) => {
       if (props.selectable) ctx.emit('select', data)
     }
     const calcWidth = computed(() => {
@@ -106,10 +100,10 @@ export default defineComponent({
       })
     })
     const calcAlign = computed(() => {
-      if (!layout.value) return 'center'
+      if (!layout.value) return ['center', 'center', 'center']
       const { length } = layout.value.header
       return layout.value.header.map((item) => {
-        const index = item.indexOf('::')
+        const index = item.indexOf('=')
         if (index === 0) return 'left'
         if (index === length) return 'right'
         return 'center'
@@ -122,16 +116,35 @@ export default defineComponent({
       imgSrc.value = src
       showImgModal.value = true
     }
+    const isImage = (key: string) => {
+      if (key.match(/#(\w*)[>:]?/)) {
+        if (RegExp.$1 === 'image') {
+          key.match(/(\w*)[#>:]?/)
+          return RegExp.$1
+        }
+        return false
+      }
+      return false
+    }
+    const formatData = (key: string, data: DataType) => {
+      const { formatter } = props
+      key.match(/(\w*)[#>:]?/)
+      const dataKey = RegExp.$1
+      if (formatter && key.match(/>(\w*)[#:]?/)) {
+        return formatter[RegExp.$1](data[dataKey])
+      }
+      return data[dataKey] || ''
+    }
     return {
       layout,
-      dataSource,
-      transValue,
       handleClick,
       calcWidth,
       calcAlign,
       imgSrc,
       handleViewImage,
       showImgModal,
+      isImage,
+      formatData,
     }
   },
 })
@@ -157,6 +170,7 @@ export default defineComponent({
   .table-content
     >div
       display flex
+      align-items center
       background $table-content-bg
       box-sizing inherit
       &:nth-child(odd)
@@ -167,6 +181,8 @@ export default defineComponent({
           color $table-content-hover-color
           background $table-content-hover-bg
       img
-        width 100%
+        max-height 1rem
+        max-width 100%
         cursor pointer
+        margin-top .05rem
 </style>

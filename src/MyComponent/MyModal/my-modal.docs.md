@@ -7,6 +7,8 @@ wrapperClass: my-modal
 
 弹窗组件
 
+Tag: `m-modal`
+
 ```vue demo
 <template>
   <m-modal v-model="show" title="这是个弹窗" @close="handleClose">
