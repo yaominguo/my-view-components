@@ -3,41 +3,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, watchEffect } from 'vue'
-import * as echarts from 'echarts/core'
-import {
-  DatasetComponent,
-  DatasetComponentOption,
-  TitleComponent,
-  TitleComponentOption,
-  TooltipComponent,
-  TooltipComponentOption,
-  GridComponent,
-  GridComponentOption,
-  LegendComponent,
-  LegendComponentOption,
-} from 'echarts/components'
-import { PieChart, PieSeriesOption } from 'echarts/charts'
-import { SVGRenderer } from 'echarts/renderers'
-echarts.use([
-  DatasetComponent,
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  LegendComponent,
-  PieChart,
-  SVGRenderer,
-])
-import useChartGenerate from '@/hooks/useChartGenerate'
-
-type ECOption = echarts.ComposeOption<
-  | DatasetComponentOption
-  | TitleComponentOption
-  | TooltipComponentOption
-  | GridComponentOption
-  | LegendComponentOption
-  | PieSeriesOption
->
+import { defineComponent, PropType, watch } from 'vue'
+import { use } from 'echarts/core'
+import { PieChart } from 'echarts/charts'
+use([PieChart])
+import useChartGenerate from './useChartGenerate'
+import { PieOption, DatasetComponentOption } from './types'
 
 export default defineComponent({
   name: 'MyPie',
@@ -48,18 +19,12 @@ export default defineComponent({
       default: null,
     },
     option: {
-      type: Object as PropType<ECOption>,
-      default: null,
-    },
-    format: {
-      type: Function as PropType<
-        (dataset: DatasetComponentOption, option: ECOption) => ECOption
-      >,
+      type: Object as PropType<PieOption>,
       default: null,
     },
   },
   setup(props) {
-    const defaultOption: ECOption = {
+    const defaultOption: PieOption = {
       backgroundColor: 'transparent',
       tooltip: {
         confine: true,
@@ -73,7 +38,7 @@ export default defineComponent({
         containLabel: true,
       },
     }
-    const defaultSeriesItem: PieSeriesOption = {
+    const defaultSeriesItem = {
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['50%', '55%'],
@@ -87,15 +52,13 @@ export default defineComponent({
     }
     const { chartRef, initChart } = useChartGenerate(
       defaultOption,
-      defaultSeriesItem,
-      props.format
+      defaultSeriesItem
     )
-    onMounted(async () => {
-      initChart(props.dataset, props.option)
-    })
-    watchEffect(() => {
-      initChart(props.dataset, props.option)
-    })
+    watch(
+      [() => props.dataset, () => props.option],
+      () => initChart(props.dataset, props.option),
+      { immediate: true }
+    )
     return {
       chartRef,
     }

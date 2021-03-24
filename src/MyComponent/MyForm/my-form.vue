@@ -65,29 +65,30 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const calcWidth = (key: string) => {
+    const calcWidth = (key: string): number => {
       if (!key) return 1
       if (key.match(/\*(\d*)[#>:]?/)) {
-        return RegExp.$1
+        return +RegExp.$1
       }
       return 1
     }
-    const getLabel = (key: string) => {
+    const getLabel = (key: string): string => {
       if (!key) return ''
-      if (key.match(/:([\u4e00-\u9fa5\w]*)[#>\*]?/)) {
+      if (key.match(/:([\u4e00-\u9fa5]*[^#=>\*]*)[#>\*]?/)) {
         return RegExp.$1 + '：'
       }
       return ''
     }
     const imgSrc = ref<string | null>(null)
     const showImgModal = ref(false)
-    const handleViewImage = (src: string) => {
+    const handleViewImage = (src: string): void => {
       imgSrc.value = src
       showImgModal.value = true
     }
-    const isImage = (key: string) => {
+    /** 是图片则返回图片的key，否则返回false */
+    const isImage = (key: string): string | false => {
       if (!key) return false
-      if (key.match(/#(\w*)[>:]?/)) {
+      if (key.match(/#(\w*)[>:=]?/)) {
         if (RegExp.$1 === 'image') {
           key.match(/=?(\w*)[#>:]?/)
           return RegExp.$1
@@ -96,7 +97,7 @@ export default defineComponent({
       }
       return false
     }
-    const formatData = (key: string) => {
+    const formatData = (key: string): unknown => {
       if (!key) return ''
       const { formatter, data } = props
       key.match(/=?(\w*)[#>\*:]?/)
@@ -107,7 +108,7 @@ export default defineComponent({
       return data[dataKey] || ''
     }
 
-    const calcAlign = (key: string) => {
+    const calcAlign = (key: string): string => {
       if (!key) return 'right'
       const index = key.indexOf('=')
       if (index === 0) return 'left'

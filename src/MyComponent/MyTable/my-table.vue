@@ -87,7 +87,7 @@ export default defineComponent({
       const keys = template[1].split('|')
       return { header, keys }
     })
-    const handleClick = (data: DataType) => {
+    const handleClick = (data: DataType): void => {
       if (props.selectable) ctx.emit('select', data)
     }
     const calcWidth = computed(() => {
@@ -112,11 +112,12 @@ export default defineComponent({
 
     const imgSrc = ref<string | null>(null)
     const showImgModal = ref(false)
-    const handleViewImage = (src: string) => {
+    const handleViewImage = (src: string): void => {
       imgSrc.value = src
       showImgModal.value = true
     }
-    const isImage = (key: string) => {
+    /** 是图片则返回图片的key，否则返回false */
+    const isImage = (key: string): string | false => {
       if (key.match(/#(\w*)[>:]?/)) {
         if (RegExp.$1 === 'image') {
           key.match(/(\w*)[#>:]?/)
@@ -126,7 +127,7 @@ export default defineComponent({
       }
       return false
     }
-    const formatData = (key: string, data: DataType) => {
+    const formatData = (key: string, data: DataType): unknown => {
       const { formatter } = props
       key.match(/(\w*)[#>:]?/)
       const dataKey = RegExp.$1

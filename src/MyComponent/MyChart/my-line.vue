@@ -3,48 +3,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, watchEffect } from 'vue'
-import * as echarts from 'echarts/core'
-import {
-  DatasetComponent,
-  DatasetComponentOption,
-  TitleComponent,
-  TitleComponentOption,
-  TooltipComponent,
-  TooltipComponentOption,
-  GridComponent,
-  GridComponentOption,
-  LegendComponent,
-  LegendComponentOption,
-} from 'echarts/components'
-import {
-  LineChart,
-  LineSeriesOption,
-  BarChart,
-  BarSeriesOption,
-} from 'echarts/charts'
-import { SVGRenderer } from 'echarts/renderers'
-echarts.use([
-  DatasetComponent,
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  LegendComponent,
-  LineChart,
-  BarChart,
-  SVGRenderer,
-])
-import useChartGenerate from '@/hooks/useChartGenerate'
-
-type ECOption = echarts.ComposeOption<
-  | DatasetComponentOption
-  | TitleComponentOption
-  | TooltipComponentOption
-  | GridComponentOption
-  | LegendComponentOption
-  | LineSeriesOption
-  | BarSeriesOption
->
+import { defineComponent, PropType, watch } from 'vue'
+import { use } from 'echarts/core'
+import { LineChart, BarChart } from 'echarts/charts'
+use([LineChart, BarChart])
+import useChartGenerate from './useChartGenerate'
+import { LineOption, DatasetComponentOption } from './types'
 
 export default defineComponent({
   name: 'MyLine',
@@ -55,18 +19,12 @@ export default defineComponent({
       default: null,
     },
     option: {
-      type: Object as PropType<ECOption>,
-      default: null,
-    },
-    format: {
-      type: Function as PropType<
-        (dataset: DatasetComponentOption, option: ECOption) => ECOption
-      >,
+      type: Object as PropType<LineOption>,
       default: null,
     },
   },
   setup(props) {
-    const defaultOption: ECOption = {
+    const defaultOption: LineOption = {
       backgroundColor: 'transparent',
       tooltip: {
         confine: true,
@@ -92,7 +50,7 @@ export default defineComponent({
         },
       ],
     }
-    const defaultSeriesItem: LineSeriesOption = {
+    const defaultSeriesItem = {
       type: 'line',
       smooth: true,
       lineStyle: {
@@ -104,15 +62,13 @@ export default defineComponent({
     }
     const { chartRef, initChart } = useChartGenerate(
       defaultOption,
-      defaultSeriesItem,
-      props.format
+      defaultSeriesItem
     )
-    onMounted(async () => {
-      initChart(props.dataset, props.option)
-    })
-    watchEffect(() => {
-      initChart(props.dataset, props.option)
-    })
+    watch(
+      [() => props.dataset, () => props.option],
+      () => initChart(props.dataset, props.option),
+      { immediate: true }
+    )
     return {
       chartRef,
     }

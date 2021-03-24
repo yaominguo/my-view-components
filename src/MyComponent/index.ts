@@ -22,6 +22,7 @@ import MySub from './MySub/my-sub.vue'
 import MyWave from './MyWave/my-wave.vue'
 import MyProgress from './MyProgress/my-progress.vue'
 import MyDrawer from './MyDrawer/my-drawer.vue'
+import * as ChartTypes from './MyChart/types'
 // import { withInstall } from './util'
 import 'normalize.css'
 
@@ -59,7 +60,7 @@ const install = (app: App): App => {
   return app
 }
 
-// 使用import {MyGrid} from '@/MyComponent'来按需引入个别组件
+// 使用import {MyGrid} from './components/MyComponent'来按需引入个别组件
 export {
   MyMap,
   MyTitle,
@@ -85,5 +86,8 @@ export {
   MyDrawer,
 }
 
-// 默认导出 —— 使用import MyComponent from '@/MyComponent'来引入所有组件
+// 图表组件的类型参数
+export { ChartTypes }
+
+// 默认导出 —— 使用import MyComponent from './components/MyComponent'来引入所有组件
 export default { install }

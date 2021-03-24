@@ -3,41 +3,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, watchEffect } from 'vue'
-import * as echarts from 'echarts/core'
-import {
-  DatasetComponent,
-  DatasetComponentOption,
-  TitleComponent,
-  TitleComponentOption,
-  TooltipComponent,
-  TooltipComponentOption,
-  GridComponent,
-  GridComponentOption,
-  LegendComponent,
-  LegendComponentOption,
-} from 'echarts/components'
-import { ScatterChart, ScatterSeriesOption } from 'echarts/charts'
-import { SVGRenderer } from 'echarts/renderers'
-echarts.use([
-  DatasetComponent,
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  LegendComponent,
-  ScatterChart,
-  SVGRenderer,
-])
-import useChartGenerate from '@/hooks/useChartGenerate'
-
-type ECOption = echarts.ComposeOption<
-  | DatasetComponentOption
-  | TitleComponentOption
-  | TooltipComponentOption
-  | GridComponentOption
-  | LegendComponentOption
-  | ScatterSeriesOption
->
+import { defineComponent, PropType, watch } from 'vue'
+import { use } from 'echarts/core'
+import { ScatterChart } from 'echarts/charts'
+use([ScatterChart])
+import useChartGenerate from './useChartGenerate'
+import { ScatterOption, DatasetComponentOption } from './types'
 
 export default defineComponent({
   name: 'MyScatter',
@@ -48,18 +19,12 @@ export default defineComponent({
       default: null,
     },
     option: {
-      type: Object as PropType<ECOption>,
-      default: null,
-    },
-    format: {
-      type: Function as PropType<
-        (dataset: DatasetComponentOption, option: ECOption) => ECOption
-      >,
+      type: Object as PropType<ScatterOption>,
       default: null,
     },
   },
   setup(props) {
-    const defaultOption: ECOption = {
+    const defaultOption: ScatterOption = {
       backgroundColor: 'transparent',
       tooltip: {
         confine: true,
@@ -75,20 +40,18 @@ export default defineComponent({
       xAxis: {},
       yAxis: {},
     }
-    const defaultSeriesItem: ScatterSeriesOption = {
+    const defaultSeriesItem = {
       type: 'scatter',
     }
     const { chartRef, initChart } = useChartGenerate(
       defaultOption,
-      defaultSeriesItem,
-      props.format
+      defaultSeriesItem
     )
-    onMounted(async () => {
-      initChart(props.dataset, props.option)
-    })
-    watchEffect(() => {
-      initChart(props.dataset, props.option)
-    })
+    watch(
+      [() => props.dataset, () => props.option],
+      () => initChart(props.dataset, props.option),
+      { immediate: true }
+    )
     return {
       chartRef,
     }

@@ -3,41 +3,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, watchEffect } from 'vue'
-import * as echarts from 'echarts/core'
-import {
-  DatasetComponent,
-  DatasetComponentOption,
-  TitleComponent,
-  TitleComponentOption,
-  TooltipComponent,
-  TooltipComponentOption,
-  GridComponent,
-  GridComponentOption,
-  LegendComponent,
-  LegendComponentOption,
-} from 'echarts/components'
-import { RadarChart, RadarSeriesOption } from 'echarts/charts'
-import { SVGRenderer } from 'echarts/renderers'
-echarts.use([
-  DatasetComponent,
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  LegendComponent,
-  RadarChart,
-  SVGRenderer,
-])
-import useChartGenerate from '@/hooks/useChartGenerate'
-
-type ECOption = echarts.ComposeOption<
-  | DatasetComponentOption
-  | TitleComponentOption
-  | TooltipComponentOption
-  | GridComponentOption
-  | LegendComponentOption
-  | RadarSeriesOption
->
+import { defineComponent, PropType, watch } from 'vue'
+import { use } from 'echarts/core'
+import { RadarChart } from 'echarts/charts'
+use([RadarChart])
+import useChartGenerate from './useChartGenerate'
+import { RadarOption, DatasetComponentOption } from './types'
 
 export default defineComponent({
   name: 'MyRadar',
@@ -48,18 +19,12 @@ export default defineComponent({
       default: null,
     },
     option: {
-      type: Object as PropType<ECOption>,
-      default: null,
-    },
-    format: {
-      type: Function as PropType<
-        (dataset: DatasetComponentOption, option: ECOption) => ECOption
-      >,
+      type: Object as PropType<RadarOption>,
       default: null,
     },
   },
   setup(props) {
-    const defaultOption: ECOption = {
+    const defaultOption: RadarOption = {
       backgroundColor: 'transparent',
       tooltip: {
         confine: true,
@@ -107,7 +72,7 @@ export default defineComponent({
         radius: '55%',
       },
     }
-    const defaultSeriesItem: RadarSeriesOption = {
+    const defaultSeriesItem = {
       type: 'radar',
       symbol: 'none',
       areaStyle: {
@@ -118,23 +83,24 @@ export default defineComponent({
       },
     }
     const { chartRef, initChart } = useChartGenerate(
-      props.option ? Object.assign(defaultOption, props.option) : defaultOption,
-      defaultSeriesItem,
-      props.format
+      defaultOption,
+      defaultSeriesItem
     )
-    onMounted(async () => {
-      initChart(props.dataset, props.option)
-    })
-    watchEffect(() => {
-      (defaultOption as any).radar.indicator =
-        props.dataset &&
-        props.dataset.dimensions &&
-        props.dataset.dimensions.map((d) => ({
-          name: (d as any).displayName,
-          max: (d as any).max,
-        }))
-      initChart(props.dataset, props.option)
-    })
+    watch(
+      [() => props.dataset, () => props.option],
+      () => {
+        // eslint-disable-next-line
+        ;(defaultOption as any).radar.indicator =
+          props.dataset &&
+          props.dataset.dimensions &&
+          props.dataset.dimensions.map((d) => ({
+            name: (d as any).displayName,
+            max: (d as any).max,
+          }))
+        initChart(props.dataset, props.option)
+      },
+      { immediate: true }
+    )
     return {
       chartRef,
     }
