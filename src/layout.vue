@@ -2,11 +2,14 @@
   <m-grid
     class="layout-grid"
     :template="['title title', 'menu content']"
-    columns="2rem 1fr"
+    columns="1.8rem 1fr"
     rows="0.4rem 1fr"
     gap=".1rem"
+    style="padding: 0"
   >
-    <div class="title" area="title">MyViewComponents</div>
+    <div class="title" area="title">
+      <span @click="toPage('home')">MyViewComponents</span>
+    </div>
     <div class="menu" area="menu">
       <div
         v-for="menu in menus"
@@ -17,7 +20,9 @@
         {{ menu.name }}
       </div>
     </div>
-    <div class="content" area="content"><router-view /></div>
+    <div class="content" area="content">
+      <router-view />
+    </div>
   </m-grid>
 </template>
 
@@ -42,32 +47,65 @@ export default defineComponent({
 </script>
 
 <style lang="stylus" scoped>
-$border = 1px solid #e6e6e6
+$blue(opacity = 1)
+  rgba(64, 158, 255, opacity)
 $hover-color = rgb(236, 245, 255)
 .layout-grid
   color #2c3e50
-  font-size 12px
+  font-size .1rem
   .title
+    color $blue()
     display flex
     align-items center
-    font-size 20px
+    font-size .2rem
     font-weight bold
-    padding 0 10px
-    border-bottom $border
-  .menu
-    font-size 14px
-    >div
-      line-height 3
+    padding 0 .2rem
+    box-shadow 0 .02rem .05rem 0 rgba(0, 0, 0, .1)
+    >span
+      position relative
+      z-index 10
       cursor pointer
-      padding 0 10px
+      transition color .2s ease-in-out
+      &:before
+        z-index -1
+        content ''
+        position absolute
+        top 0
+        bottom 0
+        left -0.25em
+        right -0.25em
+        background $blue()
+        transform-origin center right
+        transform scaleX(0)
+        transition transform .2s ease-in-out
+      &:hover
+        color #fff
+      &:hover::before
+        transform-origin center left
+        transform scaleX(1)
+  .menu
+    font-size .13rem
+    font-weight 500
+    display flex
+    flex-direction column
+    padding-left .1rem
+    padding-bottom .1rem
+    >div
+      display flex
+      align-items center
+      flex 1
+      cursor pointer
+      padding 0 .1rem
+      transition all .3s ease-in-out
       &.on
-        color rgb(64, 158, 255)
-        border-right 4px solid @color
+        color $blue()
+        border-right .05rem solid @color
+        box-shadow 0 .02rem .05rem 0 $blue(0.5)
       &.on
       &:hover
         background $hover-color
   .content
     overflow-x hidden
     overflow-y auto
-    padding 0 20px 200px
+    padding 0 .2rem 1rem
 </style>

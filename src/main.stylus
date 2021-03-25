@@ -8,11 +8,16 @@
   .markdownIt-Anchor
     color #66b1ff
   .vuedoc-demo__preview
-    background rgba(2,27,53,.3)
+    background rgba(5,71,138,0.5)
     color #fff
+  .vuedoc__code
+    user-select all
   .vuedoc-demo__footer
-    font-size 14px
+    font-size .15rem
     font-weight bold
+    color #999
+    &:hover
+      color #66b1ff
   table
     width 100%
     tr

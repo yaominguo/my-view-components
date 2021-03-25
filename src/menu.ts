@@ -13,7 +13,7 @@ import MyProgress from '@/MyComponent/MyProgress/my-progress.docs.md'
 import MyDrawer from '@/MyComponent/MyDrawer/my-drawer.docs.md'
 import MyForm from '@/MyComponent/MyForm/my-form.docs.md'
 import MyTable from '@/MyComponent/MyTable/my-table.docs.md'
-// import MyLine from './MyChart/my-line.docs.md'
+import MyChart from '@/MyComponent/MyChart/my-chart.docs.md'
 // import MyBar from './MyChart/my-bar.docs.md'
 // import MyPie from './MyChart/my-pie.docs.md'
 // import MyRadar from './MyChart/my-radar.docs.md'
@@ -24,6 +24,7 @@ export default [
   { name: 'my-grid', component: MyGrid },
   { name: 'my-form', component: MyForm },
   { name: 'my-table', component: MyTable },
+  { name: 'my-chart', component: MyChart },
   { name: 'my-title', component: MyTitle },
   { name: 'my-animate', component: MyAnimate },
   { name: 'my-card', component: MyCard },
@@ -36,7 +37,6 @@ export default [
   { name: 'my-wave', component: MyWave },
   { name: 'my-progress', component: MyProgress },
   { name: 'my-drawer', component: MyDrawer },
-  // { name: 'my-line', component: MyLine },
   // { name: 'my-bar', component: MyBar },
   // { name: 'my-pie', component: MyPie },
   // { name: 'my-radar', component: MyRadar },

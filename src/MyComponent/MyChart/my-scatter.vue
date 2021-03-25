@@ -5,8 +5,8 @@
 <script lang="ts">
 import { defineComponent, PropType, watch } from 'vue'
 import { use } from 'echarts/core'
-import { ScatterChart } from 'echarts/charts'
-use([ScatterChart])
+import { ScatterChart, EffectScatterChart } from 'echarts/charts'
+use([ScatterChart, EffectScatterChart])
 import useChartGenerate from './useChartGenerate'
 import { ScatterOption, DatasetComponentOption } from './types'
 

@@ -27,15 +27,20 @@ Tag: `m-grid`
     <div area="box1" style="background:skyblue;padding:.1rem">
       <h3>有area名的元素会被摆放至template中的同名位置</h3>
     </div>
-    <m-card title="box2" area="box2"></m-card>
+    <m-card title="box2" area="box2">
+      <m-grid
+        :template="['inner1 inner2 inner3', 'inner4 inner4 inner3']"
+        columns="1rem 20% auto"
+        rows="30% 1fr"
+      >
+        <div area="inner1" style="background:gold"></div>
+        <div area="inner2" style="background:gold"></div>
+        <div area="inner3" style="background:gold"></div>
+        <div area="inner4" style="background:gold"></div>
+      </m-grid>
+    </m-card>
     <m-card title="box3" area="box3"></m-card>
-    <div area="box4" style="background:brown;padding:.1rem">
-      <h3>columns和rows可以用各种单位，如rem、%、fr等，fr表示比例</h3>
-      <h3>此例子表示竖列宽度各自占比 1 : 1.5 : 1</h3>
-      <h3>
-        此例子表示横排 title 高度为0.4rem，其余为扣除0.4rem后各自占 1 : 1 : 1
-      </h3>
-    </div>
+    <div area="box4" style="background:brown;padding:.1rem"></div>
   </m-grid>
 </template>
 ```
