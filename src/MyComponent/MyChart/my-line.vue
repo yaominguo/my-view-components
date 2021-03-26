@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch } from 'vue'
+import { defineComponent, PropType, onMounted, watchEffect } from 'vue'
 import { use } from 'echarts/core'
 import { LineChart, BarChart } from 'echarts/charts'
 use([LineChart, BarChart])
@@ -64,11 +64,8 @@ export default defineComponent({
       defaultOption,
       defaultSeriesItem
     )
-    watch(
-      [() => props.dataset, () => props.option],
-      () => initChart(props.dataset, props.option),
-      { immediate: true }
-    )
+    onMounted(() => initChart(props.dataset, props.option))
+    watchEffect(() => initChart(props.dataset, props.option))
     return {
       chartRef,
     }

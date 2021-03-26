@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, watch } from 'vue'
+import { defineComponent, PropType, onMounted, watchEffect } from 'vue'
 import { use } from 'echarts/core'
 import { RadarChart } from 'echarts/charts'
 use([RadarChart])
@@ -86,21 +86,28 @@ export default defineComponent({
       defaultOption,
       defaultSeriesItem
     )
-    watch(
-      [() => props.dataset, () => props.option],
-      () => {
-        // eslint-disable-next-line
+    onMounted(() => {
+      // eslint-disable-next-line
         ;(defaultOption as any).radar.indicator =
-          props.dataset &&
-          props.dataset.dimensions &&
-          props.dataset.dimensions.map((d) => ({
-            name: (d as any).displayName,
-            max: (d as any).max,
-          }))
-        initChart(props.dataset, props.option)
-      },
-      { immediate: true }
-    )
+        props.dataset &&
+        props.dataset.dimensions &&
+        props.dataset.dimensions.map((d) => ({
+          name: (d as any).displayName,
+          max: (d as any).max,
+        }))
+      initChart(props.dataset, props.option)
+    })
+    watchEffect(() => {
+      // eslint-disable-next-line
+        ;(defaultOption as any).radar.indicator =
+        props.dataset &&
+        props.dataset.dimensions &&
+        props.dataset.dimensions.map((d) => ({
+          name: (d as any).displayName,
+          max: (d as any).max,
+        }))
+      initChart(props.dataset, props.option)
+    })
     return {
       chartRef,
     }
