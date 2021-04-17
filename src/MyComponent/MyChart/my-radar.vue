@@ -23,7 +23,8 @@ export default defineComponent({
       default: null,
     },
   },
-  setup(props) {
+  emits: ['init'],
+  setup(props, ctx) {
     const defaultOption: RadarOption = {
       backgroundColor: 'transparent',
       tooltip: {
@@ -95,7 +96,8 @@ export default defineComponent({
           name: (d as any).displayName,
           max: (d as any).max,
         }))
-      initChart(props.dataset, props.option)
+      const instance: any = initChart(props.dataset, props.option)
+      instance && ctx.emit('init', instance)
     })
     watchEffect(() => {
       // eslint-disable-next-line
@@ -106,7 +108,8 @@ export default defineComponent({
           name: (d as any).displayName,
           max: (d as any).max,
         }))
-      initChart(props.dataset, props.option)
+      const instance: any = initChart(props.dataset, props.option)
+      instance && ctx.emit('init', instance)
     })
     return {
       chartRef,

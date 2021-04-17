@@ -443,3 +443,9 @@ export default {
 | -------------------------------------------------------------------------------- | ----------- | --------------------- | ------- |
 | [dataset](https://echarts.apache.org/zh/tutorial.html#使用%20dataset%20管理数据) | 数据集      | {dimensions?, source} | -       |
 | [option](https://echarts.apache.org/zh/option.html#title)                        | 配置        | {...}                 | -       |
+
+## Events
+
+| events | description        | arguments        |
+| ------ | ------------------ | ---------------- |
+| init   | 图表初始化返回实例 | (instance) => {} |

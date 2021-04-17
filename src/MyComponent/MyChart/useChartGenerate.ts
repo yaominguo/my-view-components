@@ -202,7 +202,10 @@ const useChartGenerate = <T>(
    * @param dataset 数据集
    * @param option 自定义图表配置
    */
-  const initChart = (dataset: DatasetComponentOption, option?: ECOption) => {
+  const initChart = (
+    dataset: DatasetComponentOption,
+    option?: ECOption
+  ): any => {
     if (!myChart.value) return
     const config =
       (defaultSeriesItem as any).type === 'radar'
@@ -214,6 +217,7 @@ const useChartGenerate = <T>(
         : defaultConfig(defaultOption, defaultSeriesItem, dataset)
     mergeOptions(config, option)
     myChart.value.setOption(transLinearColorOption(config), true)
+    return myChart.value
   }
 
   return { chartRef, initChart }

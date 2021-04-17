@@ -23,7 +23,8 @@ export default defineComponent({
       default: null,
     },
   },
-  setup(props) {
+  emits: ['init'],
+  setup(props, ctx) {
     const defaultOption: LineOption = {
       backgroundColor: 'transparent',
       tooltip: {
@@ -64,8 +65,14 @@ export default defineComponent({
       defaultOption,
       defaultSeriesItem
     )
-    onMounted(() => initChart(props.dataset, props.option))
-    watchEffect(() => initChart(props.dataset, props.option))
+    onMounted(() => {
+      const instance: any = initChart(props.dataset, props.option)
+      instance && ctx.emit('init', instance)
+    })
+    watchEffect(() => {
+      const instance: any = initChart(props.dataset, props.option)
+      instance && ctx.emit('init', instance)
+    })
     return {
       chartRef,
     }
