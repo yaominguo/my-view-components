@@ -10,8 +10,6 @@
     "sourceMap": true,
     "baseUrl": ".",
     "lib": ["esnext", "dom"],
-    "types": ["vite/client", "node"],
-    "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
     "paths": {
       "@/*": ["src/*"]
     }

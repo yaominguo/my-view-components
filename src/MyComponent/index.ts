@@ -1,5 +1,4 @@
 import { App } from 'vue'
-import animate from 'animate.css'
 import MyMap from './MyMap/my-map.vue'
 import MyTitle from './MyTitle/my-title.vue'
 import MyLoader from './MyLoader/my-loader.vue'
@@ -24,6 +23,7 @@ import MyProgress from './MyProgress/my-progress.vue'
 import MyDrawer from './MyDrawer/my-drawer.vue'
 import * as ChartTypes from './MyChart/types'
 // import { withInstall } from './util'
+import 'animate.css'
 import 'normalize.css'
 
 const components = [
@@ -52,7 +52,6 @@ const components = [
 ]
 
 const install = (app: App): App => {
-  app.use(animate)
   // components.forEach((component) => app.use(withInstall(component)))
   components.forEach((component) =>
     app.component(component.displayName, component)

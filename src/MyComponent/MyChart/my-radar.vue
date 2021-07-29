@@ -96,7 +96,7 @@ export default defineComponent({
           name: (d as any).displayName,
           max: (d as any).max,
         }))
-      const instance: any = initChart(props.dataset, props.option)
+      const instance = initChart(props.dataset, props.option)
       instance && ctx.emit('init', instance)
     })
     watchEffect(() => {
@@ -108,7 +108,7 @@ export default defineComponent({
           name: (d as any).displayName,
           max: (d as any).max,
         }))
-      const instance: any = initChart(props.dataset, props.option)
+      const instance = initChart(props.dataset, props.option)
       instance && ctx.emit('init', instance)
     })
     return {

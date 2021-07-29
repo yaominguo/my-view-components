@@ -8,8 +8,16 @@
       boxShadow: `0 0 .08rem 0 ${color} inset`,
     }"
   >
-    <div class="before" :style="{ top: `${percent}%`, background: color }" />
-    <div class="after" :style="{ top: `${percent}%`, background: color }" />
+    <div
+      v-if="value"
+      class="before"
+      :style="{ top: `${percent}%`, background: color }"
+    />
+    <div
+      v-if="value"
+      class="after"
+      :style="{ top: `${percent}%`, background: color }"
+    />
     <p><slot /></p>
   </div>
 </template>

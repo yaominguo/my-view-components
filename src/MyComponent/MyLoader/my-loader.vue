@@ -45,27 +45,22 @@ export default defineComponent({
     position absolute
     top 50%
     left 50%
+    transform translate(-50%, -50%) rotate(0deg)
   .outer
     width .35rem
     height @width
-    margin-left -0.175rem
-    margin-top @margin-left
     animation spin 2.5s linear infinite
   .middle
     width .21rem
     height @width
-    margin-left -0.105rem
-    margin-top @margin-left
     animation spin 2s linear reverse infinite
   .inner
     width .08rem
     height @width
-    margin-left -0.04rem
-    margin-top @margin-left
     animation spin 1.5s linear infinite
 @keyframes spin {
   to {
-    transform rotate(360deg)
+    transform translate(-50%, -50%) rotate(360deg)
     border-top-color #00f2ff
     border-right-color @border-top-color
   }

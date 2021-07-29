@@ -5,8 +5,8 @@
 <script lang="ts">
 import { defineComponent, PropType, onMounted, watchEffect } from 'vue'
 import { use } from 'echarts/core'
-import { LineChart, BarChart } from 'echarts/charts'
-use([LineChart, BarChart])
+import { LineChart, BarChart, PictorialBarChart } from 'echarts/charts'
+use([LineChart, BarChart, PictorialBarChart])
 import useChartGenerate from './useChartGenerate'
 import { BarOption, DatasetComponentOption } from './types'
 
@@ -65,11 +65,11 @@ export default defineComponent({
       defaultSeriesItem
     )
     onMounted(() => {
-      const instance: any = initChart(props.dataset, props.option)
+      const instance = initChart(props.dataset, props.option)
       instance && ctx.emit('init', instance)
     })
     watchEffect(() => {
-      const instance: any = initChart(props.dataset, props.option)
+      const instance = initChart(props.dataset, props.option)
       instance && ctx.emit('init', instance)
     })
     return {

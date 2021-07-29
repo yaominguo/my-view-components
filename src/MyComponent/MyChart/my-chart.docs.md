@@ -446,6 +446,6 @@ export default {
 
 ## Events
 
-| events | description        | arguments        |
-| ------ | ------------------ | ---------------- |
-| init   | 图表初始化返回实例 | (instance) => {} |
+| events | description    | arguments        |
+| ------ | -------------- | ---------------- |
+| init   | 图表初始化完成 | (instance) => {} |

@@ -12,6 +12,7 @@ import {
 import {
   LineSeriesOption,
   BarSeriesOption,
+  PictorialBarSeriesOption,
   PieSeriesOption,
   RadarSeriesOption,
   ScatterSeriesOption,
@@ -33,6 +34,7 @@ export type ComponentsOption = ComposeOption<
 export type ECOption = ComposeOption<
   | LineSeriesOption
   | BarSeriesOption
+  | PictorialBarSeriesOption
   | PieSeriesOption
   | RadarSeriesOption
   | ScatterSeriesOption
@@ -41,7 +43,7 @@ export type ECOption = ComposeOption<
 
 /** 柱状图选项参数 */
 export type BarOption = ComponentsOption &
-  ComposeOption<LineSeriesOption | BarSeriesOption>
+  ComposeOption<LineSeriesOption | BarSeriesOption | PictorialBarSeriesOption>
 /** 折线图选项参数 */
 export type LineOption = ComponentsOption &
   ComposeOption<LineSeriesOption | BarSeriesOption>

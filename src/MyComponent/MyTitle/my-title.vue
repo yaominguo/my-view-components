@@ -24,7 +24,7 @@ export default defineComponent({
   setup() {
     const date = ref(getDate())
     const time = ref('')
-    const timer = ref<number | null>(null)
+    const timer = ref<NodeJS.Timer | null>(null)
     timer.value = setInterval(() => {
       time.value = getTime()
     })

@@ -49,11 +49,11 @@ export default defineComponent({
       defaultSeriesItem
     )
     onMounted(() => {
-      const instance: any = initChart(props.dataset, props.option)
+      const instance = initChart(props.dataset, props.option)
       instance && ctx.emit('init', instance)
     })
     watchEffect(() => {
-      const instance: any = initChart(props.dataset, props.option)
+      const instance = initChart(props.dataset, props.option)
       instance && ctx.emit('init', instance)
     })
     return {

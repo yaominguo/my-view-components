@@ -64,7 +64,7 @@ export default defineComponent({
       () => props.length <= 100 && props.length >= props.limit
     )
     const start = () => {
-      if (!props.length) {
+      if (!props.length && props.length !== 0) {
         console.error('MyScroll 需要length参数！')
         return
       }

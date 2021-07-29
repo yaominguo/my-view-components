@@ -1,5 +1,5 @@
 import { onMounted, onBeforeUnmount, nextTick, shallowRef, Ref } from 'vue'
-import { use, init, graphic, ECharts } from 'echarts/core'
+import { use, init, graphic, ECharts, EChartsType } from 'echarts/core'
 import { SVGRenderer } from 'echarts/renderers'
 
 import {
@@ -26,7 +26,10 @@ import { ECOption, RadarOption, DatasetComponentOption } from './types'
 
 interface ReturnProp {
   chartRef: Ref<null | HTMLElement>
-  initChart: (dataset: DatasetComponentOption, option?: ECOption) => void
+  initChart: (
+    dataset: DatasetComponentOption,
+    option?: ECOption
+  ) => EChartsType | undefined
 }
 
 /**
@@ -205,7 +208,7 @@ const useChartGenerate = <T>(
   const initChart = (
     dataset: DatasetComponentOption,
     option?: ECOption
-  ): any => {
+  ): EChartsType | undefined => {
     if (!myChart.value) return
     const config =
       (defaultSeriesItem as any).type === 'radar'

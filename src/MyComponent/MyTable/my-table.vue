@@ -4,7 +4,9 @@
       <div
         v-for="(title, index) in layout.header"
         :key="title"
-        :style="`flex:${calcWidth[index]}`"
+        :style="`flex:${
+          Array.isArray(calcWidth) ? calcWidth[index] : calcWidth
+        }`"
       >
         <p :style="`text-align:${calcAlign[index]}`">
           {{ title.split('*')[0].replace('=', '') }}
@@ -21,13 +23,15 @@
         <div
           v-for="(key, i) in layout.keys"
           :key="key"
-          :style="`flex:${calcWidth[i]};text-align:${calcAlign[i]}`"
+          :style="`flex:${
+            Array.isArray(calcWidth) ? calcWidth[i] : calcWidth
+          };text-align:${calcAlign[i]}`"
         >
           <img
-            v-if="isImage(key)"
-            :src="item[isImage(key)]"
+            v-if="getImage(key, item).isImg"
+            :src="getImage(key, item).src"
             :draggable="false"
-            @click.stop="handleViewImage(item[isImage(key)])"
+            @click.stop="handleViewImage(getImage(key, item).src)"
           />
           <p v-else :style="`text-align:${calcAlign[i]}`">
             {{ formatData(key, item) }}
@@ -46,7 +50,7 @@ import { computed, defineComponent, PropType, ref } from 'vue'
 import MyModal from '../MyModal/my-modal.vue'
 
 interface FormatterType {
-  [propName: string]: <T>(val: T) => T
+  [propName: string]: <T>(val: T, data?: DataType) => T
 }
 interface DataType {
   [propName: string]: string | number | string[] | number[]
@@ -82,7 +86,12 @@ export default defineComponent({
   setup(props, ctx) {
     const layout = computed(() => {
       const { template } = props
-      if (!template || template.length < 2) return
+      if (!template || template.length < 2) {
+        return {
+          header: [],
+          keys: [],
+        }
+      }
       const header = template[0].split('|')
       const keys = template[1].split('|')
       return { header, keys }
@@ -99,7 +108,7 @@ export default defineComponent({
         return 1
       })
     })
-    const calcAlign = computed(() => {
+    const calcAlign = computed<('center' | 'left' | 'right')[]>(() => {
       if (!layout.value) return ['center', 'center', 'center']
       const { length } = layout.value.header
       return layout.value.header.map((item) => {
@@ -116,23 +125,30 @@ export default defineComponent({
       imgSrc.value = src
       showImgModal.value = true
     }
-    /** 是图片则返回图片的key，否则返回false */
-    const isImage = (key: string): string | false => {
+    /** 判断并返回图片src */
+    const getImage = (
+      key: string,
+      item: DataType
+    ): { isImg: boolean; src: string } => {
+      const result = {
+        isImg: false,
+        src: '',
+      }
       if (key.match(/#(\w*)[>:]?/)) {
         if (RegExp.$1 === 'image') {
           key.match(/(\w*)[#>:]?/)
-          return RegExp.$1
+          result.src = item[RegExp.$1] as string
+          result.isImg = true
         }
-        return false
       }
-      return false
+      return result
     }
     const formatData = (key: string, data: DataType): unknown => {
       const { formatter } = props
       key.match(/(\w*)[#>:]?/)
       const dataKey = RegExp.$1
       if (formatter && key.match(/>(\w*)[#:]?/)) {
-        return formatter[RegExp.$1](data[dataKey])
+        return formatter[RegExp.$1](data[dataKey], data)
       }
       return data[dataKey] || ''
     }
@@ -144,7 +160,7 @@ export default defineComponent({
       imgSrc,
       handleViewImage,
       showImgModal,
-      isImage,
+      getImage,
       formatData,
     }
   },
